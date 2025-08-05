@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>公司名稱搜尋</title>
+</head>
+<body>
+  <h2>公司名稱搜尋</h2>
+  <label for="companySearch">輸入企業登記名稱前兩字：</label>
+  <input type="text" id="companySearch" />
+  <button onclick="searchCompany()">搜尋</button>
+  <p id="searchResult"></p>
+
+  <script>
+    const companyList = [
+      "建富汽車股份有限公司三重分公司",
+      "開元食品工業股份有限公司",
+      "國泰人壽保險股份有限公司三重分公司",
+      "新莊合署 (新北市政府原住民族行政局)",
+      "新泰醫院",
+      "福基創新材料股份有限公司",
+      "鴻欣護理之家",
+      "鍋董日式涮涮鍋",
+      "漢唐股份有限公司",
+      // ...你可以貼上完整 companyList 陣列
+    ];
+
+    function searchCompany() {
+      const input = document.getElementById("companySearch").value.trim();
+      const result = document.getElementById("searchResult");
+
+      if (input.length < 2) {
+        result.innerText = "請輸入至少兩個字";
+        return;
+      }
+
+      const matches = companyList.filter(name => name.startsWith(input));
+      if (matches.length > 0) {
+        result.innerHTML = "✅ 找到結果：<br>" + matches.join("<br>");
+      } else {
+        result.innerText = "❌ 沒有符合的公司名稱";
+      }
+    }
+  </script>
+</body>
+</html>
