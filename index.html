@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
   <title>企業名稱與統一編號搜尋</title>
+  <style>
     table {
       border-collapse: collapse;
       width: 60%;
@@ -17,18 +19,12 @@
       padding: 8px;
       font-size: 16px;
     }
-    #searchButton {
-      padding: 8px 16px;
-      font-size: 16px;
-      margin-left: 10px;
-    }
   </style>
 </head>
 <body>
 
 <h2>搜尋企業名稱或統一編號</h2>
 <input type="text" id="searchInput" placeholder="輸入企業名稱或統一編號搜尋..." />
-<button id="searchButton">搜尋</button>
 
 <table id="companyTable">
   <thead>
@@ -37,6 +33,7 @@
   <tbody>
     <tr><td>公司A股份有限公司</td><td>12345678</td></tr>
     <tr><td>建富汽車股份有限公司三重分公司</td><td>22421315</td></tr>
+
     <tr><td>開元食品工業股份有限公司</td><td>42612538</td></tr>
     <tr><td>國泰人壽保險股份有限公司三重分公司</td><td>90340141</td></tr>
     <tr><td>新莊合署 (新北市政府原住民族行政局)</td><td>80938562</td></tr>
@@ -561,16 +558,10 @@
 
 <script>
   const input = document.getElementById('searchInput');
-  const button = document.getElementById('searchButton');
   const tbody = document.querySelector('#companyTable tbody');
   const rows = tbody.getElementsByTagName('tr');
 
-  // 初始隱藏所有資料列
-  for (let row of rows) {
-    row.style.display = 'none';
-  }
-
-  button.addEventListener('click', () => {
+  input.addEventListener('keyup', () => {
     const filter = input.value.toLowerCase();
     for (let row of rows) {
       const name = row.cells[0].textContent.toLowerCase();
