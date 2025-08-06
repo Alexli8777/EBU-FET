@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -43,6 +44,12 @@
       padding: 8px;
       text-align: left;
     }
+    #noResult {
+      margin-top: 20px;
+      color: red;
+      font-weight: bold;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -51,13 +58,15 @@
   <input type="text" id="searchInput" placeholder="輸入企業名稱（至少2字）或統一編號（8碼）" />
   <button id="searchButton">搜尋</button>
 
+  <div id="noResult">查無登記</div>
+
   <div class="table-container">
     <table id="companyTable">
       <thead>
         <tr><th>企業名稱</th><th>統一編號</th></tr>
       </thead>
       <tbody>
-        <tr><td>公司A股份有限公司</td><td>12345678</td></tr>
+        <tr><td>公司A股份有限公司</td><td>12345678</td></tr
         <tr><td>建富汽車股份有限公司三重分公司</td><td>22421315</td></tr>
         <tr><td>開元食品工業股份有限公司</td><td>42612538</td></tr>
         <tr><td>國泰人壽保險股份有限公司三重分公司</td><td>90340141</td></tr>
@@ -586,6 +595,7 @@
     const input = document.getElementById('searchInput');
     const button = document.getElementById('searchButton');
     const table = document.getElementById('companyTable');
+    const noResult = document.getElementById('noResult');
     const rows = table.querySelectorAll('tbody tr');
 
     // 初始隱藏所有列
@@ -595,6 +605,14 @@
       const filter = input.value.trim();
       const filterLower = filter.toLowerCase();
 
+      // 禁止搜尋「公司」兩字
+      if (filterLower === '公司') {
+        alert("請輸入更具體的企業名稱或統一編號");
+        table.style.display = 'none';
+        noResult.style.display = 'none';
+        return;
+      }
+
       // 條件：至少兩個中文字 或 完整8碼統一編號
       const isChinese = /[\u4e00-\u9fa5]{2,}/.test(filter);
       const isFullID = /^\d{8}$/.test(filter);
@@ -602,6 +620,7 @@
       if (!isChinese && !isFullID) {
         alert("請輸入至少兩個中文字或完整8碼統一編號");
         table.style.display = 'none';
+        noResult.style.display = 'none';
         return;
       }
 
@@ -616,6 +635,7 @@
       });
 
       table.style.display = matchFound ? 'table' : 'none';
+      noResult.style.display = matchFound ? 'none' : 'block';
     });
   </script>
 
