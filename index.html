@@ -36,7 +36,7 @@
       border-collapse: collapse;
       width: 100%;
       min-width: 500px;
-      display: none; /* 初始隱藏 */
+      display: none;
     }
     th, td {
       border: 1px solid #999;
@@ -48,7 +48,7 @@
 <body>
 
   <h2>搜尋企業名稱或統一編號</h2>
-  <input type="text" id="searchInput" placeholder="輸入至少兩個字或兩位數字進行搜尋..." />
+  <input type="text" id="searchInput" placeholder="輸入企業名稱（至少2字）或統一編號（8碼）" />
   <button id="searchButton">搜尋</button>
 
   <div class="table-container">
@@ -592,11 +592,15 @@
     rows.forEach(row => row.style.display = 'none');
 
     button.addEventListener('click', () => {
-      const filter = input.value.trim().toLowerCase();
+      const filter = input.value.trim();
+      const filterLower = filter.toLowerCase();
 
-      // 至少輸入兩個字或兩位數字才搜尋
-      if (filter.length < 2) {
-        alert("請至少輸入兩個字或兩位數字進行搜尋");
+      // 條件：至少兩個中文字 或 完整8碼統一編號
+      const isChinese = /[\u4e00-\u9fa5]{2,}/.test(filter);
+      const isFullID = /^\d{8}$/.test(filter);
+
+      if (!isChinese && !isFullID) {
+        alert("請輸入至少兩個中文字或完整8碼統一編號");
         table.style.display = 'none';
         return;
       }
@@ -606,7 +610,7 @@
       rows.forEach(row => {
         const name = row.cells[0].textContent.toLowerCase();
         const id = row.cells[1].textContent.toLowerCase();
-        const isMatch = name.includes(filter) || id.includes(filter);
+        const isMatch = name.includes(filterLower) || id.includes(filterLower);
         row.style.display = isMatch ? '' : 'none';
         if (isMatch) matchFound = true;
       });
