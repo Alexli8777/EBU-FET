@@ -1,29 +1,35 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
+
+html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<title>企業名稱與統一編號搜尋</title>
-<style>
-  table {
-    border-collapse: collapse;
-    width: 60%;
-    margin-top: 20px;
-  }
-  th, td {
-    border: 1px solid #999;
-    padding: 8px;
-  }
-  #searchInput {
-    width: 60%;
-    padding: 8px;
-    font-size: 16px;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>企業名稱與統一編號搜尋</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 60%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+    }
+    #searchInput {
+      width: 60%;
+      padding: 8px;
+      font-size: 16px;
+    }
+    #searchButton {
+      padding: 8px 16px;
+      font-size: 16px;
+      margin-left: 10px;
+    }
+  </style>
 </head>
 <body>
 
 <h2>搜尋企業名稱或統一編號</h2>
 <input type="text" id="searchInput" placeholder="輸入企業名稱或統一編號搜尋..." />
+<button id="searchButton">搜尋</button>
 
 <table id="companyTable">
   <thead>
@@ -551,16 +557,21 @@
     <tr><td>華泰商業銀行股份有限公司文山簡易型分公司</td><td>70812488</td></tr>
     <tr><td>華鼎國際開發股份有限公司</td><td>24469588</td></tr>
     <tr><td>浩克廚房有限公司</td><td>91040451</td></tr>
-
   </tbody>
 </table>
 
 <script>
   const input = document.getElementById('searchInput');
+  const button = document.getElementById('searchButton');
   const tbody = document.querySelector('#companyTable tbody');
   const rows = tbody.getElementsByTagName('tr');
 
-  input.addEventListener('keyup', () => {
+  // 初始隱藏所有資料列
+  for (let row of rows) {
+    row.style.display = 'none';
+  }
+
+  button.addEventListener('click', () => {
     const filter = input.value.toLowerCase();
     for (let row of rows) {
       const name = row.cells[0].textContent.toLowerCase();
