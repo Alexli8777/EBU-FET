@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>企業名稱與統一編號搜尋</title>
+  <style>
 
 <!DOCTYPE html>
 <html lang="zh-Hant">
@@ -19,12 +25,21 @@
       padding: 8px;
       font-size: 16px;
     }
+    #searchButton {
+      padding: 8px 16px;
+      font-size: 16px;
+      margin-left: 10px;
+    }
+    #companyTable {
+      display: none; /* 初始隱藏整張表格 */
+    }
   </style>
 </head>
 <body>
 
 <h2>搜尋企業名稱或統一編號</h2>
 <input type="text" id="searchInput" placeholder="輸入企業名稱或統一編號搜尋..." />
+<button id="searchButton">搜尋</button>
 
 <table id="companyTable">
   <thead>
@@ -33,7 +48,6 @@
   <tbody>
     <tr><td>公司A股份有限公司</td><td>12345678</td></tr>
     <tr><td>建富汽車股份有限公司三重分公司</td><td>22421315</td></tr>
-
     <tr><td>開元食品工業股份有限公司</td><td>42612538</td></tr>
     <tr><td>國泰人壽保險股份有限公司三重分公司</td><td>90340141</td></tr>
     <tr><td>新莊合署 (新北市政府原住民族行政局)</td><td>80938562</td></tr>
@@ -558,16 +572,27 @@
 
 <script>
   const input = document.getElementById('searchInput');
-  const tbody = document.querySelector('#companyTable tbody');
-  const rows = tbody.getElementsByTagName('tr');
+  const button = document.getElementById('searchButton');
+  const table = document.getElementById('companyTable');
+  const rows = table.querySelectorAll('tbody tr');
 
-  input.addEventListener('keyup', () => {
+  // 初始隱藏所有列
+  rows.forEach(row => row.style.display = 'none');
+
+  button.addEventListener('click', () => {
     const filter = input.value.toLowerCase();
-    for (let row of rows) {
+    let matchFound = false;
+
+    rows.forEach(row => {
       const name = row.cells[0].textContent.toLowerCase();
       const id = row.cells[1].textContent.toLowerCase();
-      row.style.display = (name.includes(filter) || id.includes(filter)) ? '' : 'none';
-    }
+      const isMatch = name.includes(filter) || id.includes(filter);
+      row.style.display = isMatch ? '' : 'none';
+      if (isMatch) matchFound = true;
+    });
+
+    // 有匹配才顯示表格
+    table.style.display = matchFound ? 'table' : 'none';
   });
 </script>
 
